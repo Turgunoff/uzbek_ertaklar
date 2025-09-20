@@ -7,8 +7,6 @@ import 'dart:math';
 import '../providers/stories_provider.dart';
 import '../providers/theme_provider.dart';
 import '../widgets/premium_story_card.dart';
-import '../widgets/category_card.dart';
-import '../widgets/featured_card.dart';
 import 'category_stories_screen.dart';
 import 'settings_screen.dart';
 import 'story_reader_screen.dart';
@@ -48,14 +46,9 @@ class _HomeScreenState extends State<HomeScreen>
   Widget build(BuildContext context) {
     final isDark = Provider.of<ThemeProvider>(context).isDarkMode;
 
-    // Status bar color
-    // SystemChrome.setSystemUIOverlayStyle(
-    //   SystemUiOverlayStyle(
-    //     statusBarColor: Colors.transparent,
-    //     statusBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
-    //   ),
-    // );
     return Scaffold(
+      backgroundColor:
+          isDark ? const Color(0xFF121212) : const Color(0xFFF5F5F5),
       body: _selectedIndex == 0
           ? _buildHomeTab()
           : _selectedIndex == 1
@@ -134,7 +127,7 @@ class _HomeScreenState extends State<HomeScreen>
               ),
               const SizedBox(height: 4),
               Text(
-                'Magical Stories from Uzbekistan',
+                'O\'zbekistonning sehrli ertaklari',
                 style: GoogleFonts.openSans(
                   fontSize: 14,
                   color: Colors.white.withOpacity(0.8),
@@ -194,6 +187,7 @@ class _HomeScreenState extends State<HomeScreen>
   Widget _buildQuickCategories() {
     return Consumer<StoriesProvider>(
       builder: (context, provider, child) {
+        final isDark = Provider.of<ThemeProvider>(context).isDarkMode;
         final categoryStats = _getCategoryStats(provider);
 
         return Column(
@@ -209,7 +203,7 @@ class _HomeScreenState extends State<HomeScreen>
                     style: GoogleFonts.playfairDisplay(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
-                      color: const Color(0xFF1A1A1A),
+                      color: isDark ? Colors.white : const Color(0xFF1A1A1A),
                     ),
                   ),
                   TextButton(
@@ -284,6 +278,8 @@ class _HomeScreenState extends State<HomeScreen>
     Color color,
     VoidCallback onTap,
   ) {
+    final isDark = Provider.of<ThemeProvider>(context).isDarkMode;
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -291,7 +287,7 @@ class _HomeScreenState extends State<HomeScreen>
         margin: const EdgeInsets.only(right: 12),
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: color.withOpacity(0.1),
+          color: isDark ? color.withOpacity(0.2) : color.withOpacity(0.1),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: color.withOpacity(0.3),
@@ -314,14 +310,14 @@ class _HomeScreenState extends State<HomeScreen>
                   style: GoogleFonts.montserrat(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
-                    color: const Color(0xFF1A1A1A),
+                    color: isDark ? Colors.white : const Color(0xFF1A1A1A),
                   ),
                 ),
                 Text(
                   '$count ertak',
                   style: GoogleFonts.openSans(
                     fontSize: 12,
-                    color: Colors.grey.shade600,
+                    color: isDark ? Colors.white70 : Colors.grey.shade600,
                   ),
                 ),
               ],
@@ -335,6 +331,7 @@ class _HomeScreenState extends State<HomeScreen>
   Widget _buildFeaturedSection() {
     return Consumer<StoriesProvider>(
       builder: (context, provider, child) {
+        final isDark = Provider.of<ThemeProvider>(context).isDarkMode;
         // Random 10 ta ertak
         final allStories = List.from(provider.stories);
         allStories.shuffle(Random());
@@ -350,7 +347,7 @@ class _HomeScreenState extends State<HomeScreen>
                 style: GoogleFonts.playfairDisplay(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: const Color(0xFF1A1A1A),
+                  color: isDark ? Colors.white : const Color(0xFF1A1A1A),
                 ),
               ),
             ),
@@ -387,14 +384,16 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   Widget _buildBottomNav() {
+    final isDark = Provider.of<ThemeProvider>(context).isDarkMode;
+
     return Container(
       margin: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
         borderRadius: BorderRadius.circular(30),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withOpacity(isDark ? 0.3 : 0.1),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -407,9 +406,11 @@ class _HomeScreenState extends State<HomeScreen>
           child: BottomNavigationBar(
             currentIndex: _selectedIndex,
             onTap: (index) => setState(() => _selectedIndex = index),
-            backgroundColor: Colors.white.withOpacity(0.9),
+            backgroundColor: isDark
+                ? const Color(0xFF1E1E1E).withOpacity(0.9)
+                : Colors.white.withOpacity(0.9),
             selectedItemColor: const Color(0xFF4A148C),
-            unselectedItemColor: Colors.grey,
+            unselectedItemColor: isDark ? Colors.grey.shade400 : Colors.grey,
             elevation: 0,
             items: const [
               BottomNavigationBarItem(

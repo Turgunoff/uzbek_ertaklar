@@ -183,7 +183,8 @@ class _PremiumStoryCardState extends State<PremiumStoryCard>
                           style: GoogleFonts.playfairDisplay(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
-                            color: const Color(0xFF1A1A1A),
+                            color:
+                                isDark ? Colors.white : const Color(0xFF1A1A1A),
                           ),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -196,14 +197,17 @@ class _PremiumStoryCardState extends State<PremiumStoryCard>
                           Icon(
                             Icons.access_time,
                             size: 14,
-                            color: Colors.grey.shade500,
+                            color:
+                                isDark ? Colors.white60 : Colors.grey.shade500,
                           ),
                           const SizedBox(width: 4),
                           Text(
                             widget.story.readTime,
                             style: GoogleFonts.openSans(
                               fontSize: 12,
-                              color: Colors.grey.shade600,
+                              color: isDark
+                                  ? Colors.white60
+                                  : Colors.grey.shade600,
                             ),
                           ),
                         ],
@@ -252,15 +256,15 @@ class _PremiumStoryCardState extends State<PremiumStoryCard>
   String _getCategoryName(String category) {
     switch (category) {
       case 'Botirlar haqida':
-        return 'Hero Tale';
+        return 'Qahramon';
       case 'Muhabbat haqida':
-        return 'Love Story';
+        return 'Sevgi';
       case 'Sehrli ertaklar':
-        return 'Magic';
+        return 'Sehrli';
       case 'Hikmatli ertaklar':
-        return 'Wisdom';
+        return 'Donolik';
       default:
-        return 'Story';
+        return 'Ertak';
     }
   }
 }

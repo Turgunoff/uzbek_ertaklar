@@ -50,11 +50,22 @@ class ThemeProvider with ChangeNotifier {
       textTheme: const TextTheme(
         bodyLarge: TextStyle(color: Color(0xFF1A1A1A)),
         bodyMedium: TextStyle(color: Color(0xFF1A1A1A)),
+        bodySmall: TextStyle(color: Color(0xFF666666)),
+        headlineLarge: TextStyle(color: Color(0xFF1A1A1A)),
+        headlineMedium: TextStyle(color: Color(0xFF1A1A1A)),
+        headlineSmall: TextStyle(color: Color(0xFF1A1A1A)),
       ),
 
       // Icon theme
       iconTheme: const IconThemeData(
         color: Color(0xFF1A1A1A),
+      ),
+
+      // Bottom navigation theme
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        backgroundColor: Colors.white,
+        selectedItemColor: Color(0xFF4A148C),
+        unselectedItemColor: Colors.grey,
       ),
     );
   }
@@ -86,6 +97,10 @@ class ThemeProvider with ChangeNotifier {
       textTheme: const TextTheme(
         bodyLarge: TextStyle(color: Colors.white),
         bodyMedium: TextStyle(color: Colors.white),
+        bodySmall: TextStyle(color: Colors.white70),
+        headlineLarge: TextStyle(color: Colors.white),
+        headlineMedium: TextStyle(color: Colors.white),
+        headlineSmall: TextStyle(color: Colors.white),
       ),
 
       // Icon theme

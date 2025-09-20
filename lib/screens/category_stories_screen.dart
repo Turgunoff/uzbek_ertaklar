@@ -15,8 +15,10 @@ class CategoryStoriesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: Colors.grey.shade50,
+      backgroundColor: isDark ? const Color(0xFF121212) : Colors.grey.shade50,
       appBar: AppBar(
         title: Text(
           _getCategoryTitle(category),
@@ -48,7 +50,7 @@ class CategoryStoriesScreen extends StatelessWidget {
                     'Bu kategoriyada ertaklar yo\'q',
                     style: TextStyle(
                       fontSize: 18,
-                      color: Colors.grey.shade600,
+                      color: isDark ? Colors.white70 : Colors.grey.shade600,
                     ),
                   ),
                 ],

@@ -9,6 +9,8 @@ class FavoritesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Consumer<StoriesProvider>(
       builder: (context, provider, child) {
         final favorites = provider.favoriteStories;
@@ -21,14 +23,14 @@ class FavoritesScreen extends StatelessWidget {
                 Icon(
                   Icons.favorite_border,
                   size: 80,
-                  color: Colors.grey.shade400,
+                  color: isDark ? Colors.white38 : Colors.grey.shade400,
                 ),
                 const SizedBox(height: 16),
                 Text(
                   'Sevimli ertaklar yo\'q',
                   style: TextStyle(
                     fontSize: 18,
-                    color: Colors.grey.shade600,
+                    color: isDark ? Colors.white70 : Colors.grey.shade600,
                   ),
                 ),
               ],

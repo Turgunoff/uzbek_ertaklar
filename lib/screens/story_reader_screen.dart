@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/story.dart';
 import '../providers/stories_provider.dart';
+import '../providers/theme_provider.dart';
 
 class StoryReaderScreen extends StatefulWidget {
   final Story story;
@@ -17,7 +18,6 @@ class StoryReaderScreen extends StatefulWidget {
 
 class _StoryReaderScreenState extends State<StoryReaderScreen> {
   double _fontSize = 18.0;
-  bool _isDarkMode = false;
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -37,14 +37,12 @@ class _StoryReaderScreenState extends State<StoryReaderScreen> {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       _fontSize = prefs.getDouble('fontSize') ?? 18.0;
-      _isDarkMode = prefs.getBool('darkMode') ?? false;
     });
   }
 
   Future<void> _saveSettings() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setDouble('fontSize', _fontSize);
-    await prefs.setBool('darkMode', _isDarkMode);
   }
 
   Future<void> _saveReadingHistory() async {
@@ -58,11 +56,12 @@ class _StoryReaderScreenState extends State<StoryReaderScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Provider.of<ThemeProvider>(context).isDarkMode;
+
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value:
-          _isDarkMode ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
+      value: isDark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
       child: Scaffold(
-        backgroundColor: _isDarkMode ? const Color(0xFF1A1A1A) : Colors.white,
+        backgroundColor: isDark ? const Color(0xFF1A1A1A) : Colors.white,
         body: CustomScrollView(
           controller: _scrollController,
           slivers: [
@@ -135,6 +134,8 @@ class _StoryReaderScreenState extends State<StoryReaderScreen> {
   }
 
   Widget _buildContent() {
+    final isDark = Provider.of<ThemeProvider>(context).isDarkMode;
+
     return SliverToBoxAdapter(
       child: Padding(
         padding: const EdgeInsets.all(20),
@@ -167,14 +168,14 @@ class _StoryReaderScreenState extends State<StoryReaderScreen> {
                 Icon(
                   Icons.access_time,
                   size: 16,
-                  color: _isDarkMode ? Colors.white70 : Colors.grey.shade600,
+                  color: isDark ? Colors.white70 : Colors.grey.shade600,
                 ),
                 const SizedBox(width: 4),
                 Text(
                   widget.story.readTime,
                   style: GoogleFonts.openSans(
                     fontSize: 14,
-                    color: _isDarkMode ? Colors.white70 : Colors.grey.shade600,
+                    color: isDark ? Colors.white70 : Colors.grey.shade600,
                   ),
                 ),
               ],
@@ -188,7 +189,7 @@ class _StoryReaderScreenState extends State<StoryReaderScreen> {
               style: GoogleFonts.merriweather(
                 fontSize: _fontSize,
                 height: 1.8,
-                color: _isDarkMode ? Colors.white : const Color(0xFF1A1A1A),
+                color: isDark ? Colors.white : const Color(0xFF1A1A1A),
               ),
             ),
 
@@ -232,10 +233,12 @@ class _StoryReaderScreenState extends State<StoryReaderScreen> {
   }
 
   Widget _buildBottomBar() {
+    final isDark = Provider.of<ThemeProvider>(context).isDarkMode;
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
       decoration: BoxDecoration(
-        color: _isDarkMode ? const Color(0xFF2A2A2A) : Colors.white,
+        color: isDark ? const Color(0xFF2A2A2A) : Colors.white,
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.1),
@@ -257,7 +260,7 @@ class _StoryReaderScreenState extends State<StoryReaderScreen> {
                   _saveSettings();
                 }
               },
-              color: _isDarkMode ? Colors.white : Colors.black,
+              color: isDark ? Colors.white : Colors.black,
             ),
 
             Text(
@@ -265,7 +268,7 @@ class _StoryReaderScreenState extends State<StoryReaderScreen> {
               style: GoogleFonts.openSans(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: _isDarkMode ? Colors.white : Colors.black,
+                color: isDark ? Colors.white : Colors.black,
               ),
             ),
 
@@ -277,7 +280,7 @@ class _StoryReaderScreenState extends State<StoryReaderScreen> {
                   _saveSettings();
                 }
               },
-              color: _isDarkMode ? Colors.white : Colors.black,
+              color: isDark ? Colors.white : Colors.black,
             ),
 
             // Divider
@@ -289,19 +292,19 @@ class _StoryReaderScreenState extends State<StoryReaderScreen> {
 
             // Dark Mode Toggle
             IconButton(
-              icon: Icon(_isDarkMode ? Icons.light_mode : Icons.dark_mode),
+              icon: Icon(isDark ? Icons.light_mode : Icons.dark_mode),
               onPressed: () {
-                setState(() => _isDarkMode = !_isDarkMode);
-                _saveSettings();
+                Provider.of<ThemeProvider>(context, listen: false)
+                    .toggleTheme();
               },
-              color: _isDarkMode ? Colors.white : Colors.black,
+              color: isDark ? Colors.white : Colors.black,
             ),
 
             // Auto Scroll
             IconButton(
               icon: const Icon(Icons.play_arrow),
               onPressed: _startAutoScroll,
-              color: _isDarkMode ? Colors.white : Colors.black,
+              color: isDark ? Colors.white : Colors.black,
             ),
 
             // Bookmark
@@ -310,7 +313,7 @@ class _StoryReaderScreenState extends State<StoryReaderScreen> {
               onPressed: () {
                 // TODO: Implement bookmark
               },
-              color: _isDarkMode ? Colors.white : Colors.black,
+              color: isDark ? Colors.white : Colors.black,
             ),
           ],
         ),
