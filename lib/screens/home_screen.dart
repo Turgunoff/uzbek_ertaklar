@@ -13,7 +13,7 @@ import 'favorites_screen.dart';
 import 'categories_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -76,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen>
 
         // Bottom padding
         const SliverToBoxAdapter(
-          child: SizedBox(height: 100),
+          child: SizedBox(height: 120),
         ),
       ],
     );
@@ -102,9 +102,9 @@ class _HomeScreenState extends State<HomeScreen>
             mainAxisSize: MainAxisSize.min,
             children: [
               // Title - kompakt
-              Text(
+              const Text(
                 'O\'zbek Ertaklari',
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'Playfair Display',
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
@@ -132,8 +132,6 @@ class _HomeScreenState extends State<HomeScreen>
                   color: Colors.white.withOpacity(0.8),
                 ),
               ),
-
-              const SizedBox(height: 20),
             ],
           ),
         ),
@@ -175,9 +173,9 @@ class _HomeScreenState extends State<HomeScreen>
                         ),
                       );
                     },
-                    child: Text(
+                    child: const Text(
                       'Barchasi →',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontFamily: 'Open Sans',
                         fontSize: 14,
                         color: Color(0xFF4A148C),

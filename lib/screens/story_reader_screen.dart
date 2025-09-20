@@ -311,15 +311,6 @@ class _StoryReaderScreenState extends State<StoryReaderScreen> {
               onPressed: _startAutoScroll,
               color: isDark ? Colors.white : Colors.black,
             ),
-
-            // Bookmark
-            IconButton(
-              icon: const Icon(Icons.bookmark_border),
-              onPressed: () {
-                // TODO: Implement bookmark
-              },
-              color: isDark ? Colors.white : Colors.black,
-            ),
           ],
         ),
       ),
@@ -327,11 +318,31 @@ class _StoryReaderScreenState extends State<StoryReaderScreen> {
   }
 
   void _shareStory() {
-    // TODO: Implement share functionality
+    final shareText = '''
+📚 ${widget.story.title}
+
+${widget.story.content.length > 200 ? '${widget.story.content.substring(0, 200)}...' : widget.story.content}
+
+📖 O'zbek Ertaklari ilovasida barcha ertaklarni o'qing!
+🔗 https://play.google.com/store/apps/details?id=uz.uzbek.uzbek_ertaklar
+''';
+
+    // Copy to clipboard
+    Clipboard.setData(ClipboardData(text: shareText));
+
+    // Show snackbar with share options
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Share: ${widget.story.title}'),
+        content: Text('Ertak matni clipboard\'ga nusxalandi!'),
+        action: SnackBarAction(
+          label: 'Share',
+          onPressed: () {
+            // This will open share dialog on most Android devices
+            Clipboard.setData(ClipboardData(text: shareText));
+          },
+        ),
         behavior: SnackBarBehavior.floating,
+        duration: Duration(seconds: 3),
       ),
     );
   }

@@ -17,9 +17,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Sozlamalar',
-          style: const TextStyle(
+          style: TextStyle(
             fontFamily: 'Playfair Display',
             fontWeight: FontWeight.bold,
           ),
@@ -52,9 +52,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     color: isDark ? Colors.amber : Colors.orange,
                   ),
                   const SizedBox(width: 12),
-                  Text(
+                  const Text(
                     'Tungi rejim',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: 'Open Sans',
                       fontWeight: FontWeight.w600,
                     ),
@@ -88,29 +88,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
             title: 'Versiya',
             subtitle: '1.0.0',
           ),
-
           _buildInfoTile(
             icon: Icons.email_outlined,
             title: 'Biz bilan bog\'laning',
-            subtitle: 'feedback@uzbekertaklari.uz',
-            onTap: () {
-              // TODO: Open email
-            },
+            subtitle: 'info@uzbekertaklari.uz',
           ),
 
           const SizedBox(height: 40),
 
-          Center(
+          const Center(
             child: Column(
               children: [
                 Text(
                   '📚',
-                  style: const TextStyle(fontSize: 40),
+                  style: TextStyle(fontSize: 40),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
                 Text(
                   'O\'zbek Ertaklari',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: 'Playfair Display',
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -118,7 +114,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
                 Text(
                   '© 2025 Barcha huquqlar himoyalangan',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: 'Open Sans',
                     color: Colors.grey,
                     fontSize: 12,
