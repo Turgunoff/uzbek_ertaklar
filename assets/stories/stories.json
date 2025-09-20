@@ -1,0 +1,28 @@
+{
+  "stories": [
+    {
+      "id": "1",
+      "title": "Abduaziz",
+      "category": "Hikmatli ertaklar",
+      "readTime": "8 daqiqa",
+      "isFavorite": false,
+      "content": "Bir boyning o'g'li bor ekan. Uning ismi Abduaziz ekan. Kunlardan bir kun boy o'lib, moli davlati o'g'liga qolibdi. O'g'li esa o'ziga qirqta jo'ra orttirib, ularni ziyofat qilar ekan. Jo'ralari ketadigan vaqtida har biriga bir hamyondan tilla berib yuborar ekan. Bir necha yillar o'tgandan keyin otasidan qolgan mollar tugabdi. Qirqta jo'rasi ham uni tashlab ketibdi. Bir kuni yigitning hatta yeyishga ham hech narsasi qolmabdi. Bozorga chiqib qarasa, haligi qirqta jo'rasi har xil narsalar sotishyapti. Yigit ularning oldiga borib:\n— Mening xotinim homilador edi. Yeyishga hech narsamiz qolmadi. Biror narsa beringlar, — debdi. Jo'ralar \"E, bor yo'qol, bizning senday jo'ramiz yo'q\", deb hech narsa bermay jo'natishibdi..."
+    },
+    {
+      "id": "2",
+      "title": "Alpomish",
+      "category": "Botirlar haqida",
+      "readTime": "15 daqiqa",
+      "isFavorite": false,
+      "content": "Qadim zamonlarda Baysun tog'larida Boysari degan boy yashagan ekan..."
+    },
+    {
+      "id": "3",
+      "title": "Zumrad va Qimmat",
+      "category": "Muhabbat haqida",
+      "readTime": "12 daqiqa",
+      "isFavorite": false,
+      "content": "Bir podsho bor edi, uning Zumrad ismli go'zal qizi bor edi..."
+    }
+  ]
+}
