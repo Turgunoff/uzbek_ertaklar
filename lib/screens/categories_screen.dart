@@ -3,7 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../providers/stories_provider.dart';
 import '../providers/theme_provider.dart';
+import '../models/story.dart'; // Import qo'shing
 import '../widgets/premium_story_card.dart';
+import 'category_stories_screen.dart';
 import 'story_reader_screen.dart';
 
 class CategoriesScreen extends StatefulWidget {
@@ -39,7 +41,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
         slivers: [
           // Custom App Bar with Search
           SliverAppBar(
-            expandedHeight: 120,
+            expandedHeight: 160,
             floating: false,
             pinned: true,
             backgroundColor: const Color(0xFF1A237E),
@@ -47,29 +49,77 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
               onPressed: () => Navigator.pop(context),
               icon: const Icon(Icons.arrow_back, color: Colors.white),
             ),
-            flexibleSpace: FlexibleSpaceBar(
-              title: Text(
-                'Barcha kategoriyalar',
-                style: GoogleFonts.playfairDisplay(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-              background: Container(
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [Color(0xFF1A237E), Color(0xFF4A148C)],
+            flexibleSpace: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                // AppBar qachon collapsed/expanded ekanligini aniqlash
+                final double appBarHeight = constraints.biggest.height;
+                final double expandedHeight = 160;
+                final double collapsedHeight =
+                    kToolbarHeight + MediaQuery.of(context).padding.top;
+
+                // Progress: 0.0 (collapsed) to 1.0 (expanded)
+                final double progress = ((appBarHeight - collapsedHeight) /
+                        (expandedHeight - collapsedHeight))
+                    .clamp(0.0, 1.0);
+
+                return FlexibleSpaceBar(
+                  centerTitle: false,
+                  titlePadding: EdgeInsets.only(
+                    left: 60,
+                    bottom:
+                        16 + (progress * 20), // Scroll bilan pastga siljiydi
                   ),
-                ),
-                child: SafeArea(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 60, 20, 20),
-                    child: _buildSearchBar(isDark),
+                  title: AnimatedOpacity(
+                    opacity:
+                        1.0 - progress, // Collapsed da 1.0, expanded da 0.0
+                    duration: const Duration(milliseconds: 100),
+                    child: Text(
+                      'Barcha kategoriyalar',
+                      style: GoogleFonts.playfairDisplay(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: 18,
+                      ),
+                    ),
                   ),
-                ),
-              ),
+                  background: Container(
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [Color(0xFF1A237E), Color(0xFF4A148C)],
+                      ),
+                    ),
+                    child: SafeArea(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            // Katta title (expanded da ko'rinadi)
+                            AnimatedOpacity(
+                              opacity:
+                                  progress, // Expanded da 1.0, collapsed da 0.0
+                              duration: const Duration(milliseconds: 100),
+                              child: Text(
+                                'Barcha kategoriyalar',
+                                style: GoogleFonts.playfairDisplay(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            _buildSearchBar(isDark),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
             ),
           ),
 
@@ -108,6 +158,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
 
   Widget _buildSearchBar(bool isDark) {
     return Container(
+      height: 50, // Height qo'shing
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.15),
         borderRadius: BorderRadius.circular(25),
@@ -139,17 +190,16 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 )
               : null,
           border: InputBorder.none,
-          contentPadding:
-              const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+          contentPadding: const EdgeInsets.symmetric(vertical: 14),
         ),
       ),
     );
   }
 
   Widget _buildNoResults(BuildContext context, bool isDark) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(40),
+    return SizedBox(
+      height: 400,
+      child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -182,7 +232,10 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   }
 
   Widget _buildSearchResults(
-      BuildContext context, List filteredStories, bool isDark) {
+    BuildContext context,
+    List<Story> filteredStories, // Type qo'shing
+    bool isDark,
+  ) {
     return SliverPadding(
       padding: const EdgeInsets.all(20),
       sliver: SliverGrid(
@@ -214,7 +267,10 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   }
 
   Widget _buildCategoriesList(
-      BuildContext context, StoriesProvider provider, bool isDark) {
+    BuildContext context,
+    StoriesProvider provider,
+    bool isDark,
+  ) {
     return SliverPadding(
       padding: const EdgeInsets.all(20),
       sliver: SliverList(
@@ -254,6 +310,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             provider,
             isDark,
           ),
+          const SizedBox(height: 100), // Bottom padding
         ]),
       ),
     );
@@ -270,58 +327,104 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     final stories =
         provider.stories.where((s) => s.category == category).toList();
 
+    if (stories.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            Text(
-              icon,
-              style: const TextStyle(fontSize: 28),
-            ),
-            const SizedBox(width: 8),
-            Text(
-              category,
-              style: GoogleFonts.playfairDisplay(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: isDark ? Colors.white : const Color(0xFF1A1A1A),
-              ),
-            ),
-            const SizedBox(width: 8),
-            Text(
-              '(${stories.length})',
-              style: GoogleFonts.openSans(
-                fontSize: 16,
-                color: isDark ? Colors.white70 : Colors.grey.shade600,
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 12),
-        GridView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: 0.75,
-            crossAxisSpacing: 12,
-            mainAxisSpacing: 12,
-          ),
-          itemCount: stories.length,
-          itemBuilder: (context, index) {
-            return PremiumStoryCard(
-              story: stories[index],
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => StoryReaderScreen(story: stories[index]),
+        // Category Header
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    icon,
+                    style: const TextStyle(fontSize: 28),
                   ),
-                );
-              },
-            );
-          },
+                  const SizedBox(width: 8),
+                  Text(
+                    category,
+                    style: GoogleFonts.playfairDisplay(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: isDark ? Colors.white : const Color(0xFF1A1A1A),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    '(${stories.length})',
+                    style: GoogleFonts.openSans(
+                      fontSize: 16,
+                      color: isDark ? Colors.white70 : Colors.grey.shade600,
+                    ),
+                  ),
+                ],
+              ),
+              // "Barchasi" button
+              if (stories.length > 3)
+                TextButton(
+                  onPressed: () {
+                    // Navigate to category screen with all stories
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) =>
+                            CategoryStoriesScreen(category: category),
+                      ),
+                    );
+                  },
+                  child: Row(
+                    children: [
+                      Text(
+                        'Barchasi',
+                        style: GoogleFonts.openSans(
+                          fontSize: 14,
+                          color: color,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Icon(Icons.arrow_forward, size: 16, color: color),
+                    ],
+                  ),
+                ),
+            ],
+          ),
+        ),
+
+        const SizedBox(height: 12),
+
+        // Horizontal Scroll Stories
+        SizedBox(
+          height: 260, // Card height
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            itemCount:
+                stories.length > 6 ? 6 : stories.length, // Max 6 ta ko'rsatish
+            itemBuilder: (context, index) {
+              return Container(
+                width: 160, // Card width
+                margin: const EdgeInsets.only(right: 12),
+                child: PremiumStoryCard(
+                  story: stories[index],
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) =>
+                            StoryReaderScreen(story: stories[index]),
+                      ),
+                    );
+                  },
+                ),
+              );
+            },
+          ),
         ),
       ],
     );
