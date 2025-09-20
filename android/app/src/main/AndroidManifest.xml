@@ -1,6 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Internet permission -->
+    <uses-permission android:name="android.intent.permission.INTERNET"/>
+    
     <application
-        android:label="uzbek_ertaklar"
+        android:label="O'zbek Ertaklari"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
