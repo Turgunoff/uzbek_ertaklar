@@ -40,6 +40,8 @@ class _PremiumStoryCardState extends State<PremiumStoryCard>
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return GestureDetector(
       onTapDown: (_) => setState(() => _isPressed = true),
       onTapUp: (_) {
@@ -52,11 +54,11 @@ class _PremiumStoryCardState extends State<PremiumStoryCard>
         duration: const Duration(milliseconds: 150),
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.08),
+                color: Colors.black.withOpacity(isDark ? 0.3 : 0.08),
                 blurRadius: 15,
                 offset: const Offset(0, 5),
               ),

@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:ui';
+import 'dart:math';
 import '../providers/stories_provider.dart';
+import '../providers/theme_provider.dart';
 import '../widgets/premium_story_card.dart';
 import '../widgets/category_card.dart';
 import '../widgets/featured_card.dart';
+import 'category_stories_screen.dart';
 import 'settings_screen.dart';
 import 'story_reader_screen.dart';
 import 'favorites_screen.dart';
+import 'categories_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -41,6 +46,15 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Provider.of<ThemeProvider>(context).isDarkMode;
+
+    // Status bar color
+    // SystemChrome.setSystemUIOverlayStyle(
+    //   SystemUiOverlayStyle(
+    //     statusBarColor: Colors.transparent,
+    //     statusBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
+    //   ),
+    // );
     return Scaffold(
       body: _selectedIndex == 0
           ? _buildHomeTab()
@@ -60,9 +74,9 @@ class _HomeScreenState extends State<HomeScreen>
           child: _buildHeroSection(),
         ),
 
-        // Categories
+        // Quick Categories with count
         SliverToBoxAdapter(
-          child: _buildCategories(),
+          child: _buildQuickCategories(),
         ),
 
         // Featured Stories
@@ -70,125 +84,86 @@ class _HomeScreenState extends State<HomeScreen>
           child: _buildFeaturedSection(),
         ),
 
-        // All Stories
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Text(
-              'Barcha ertaklar',
-              style: GoogleFonts.playfairDisplay(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: const Color(0xFF1A1A1A),
-              ),
-            ),
-          ),
+        // Bottom padding
+        const SliverToBoxAdapter(
+          child: SizedBox(height: 100),
         ),
-
-        // Stories Grid
-        _buildStoriesGrid(),
       ],
     );
   }
 
   Widget _buildHeroSection() {
-    return IntrinsicHeight(
-      // Auto height
-      child: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Color(0xFF1A237E),
-              Color(0xFF4A148C),
-            ],
-          ),
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Color(0xFF1A237E),
+            Color(0xFF4A148C),
+          ],
         ),
-        child: Stack(
-          children: [
-            // Background elements
-            Positioned(
-              top: 40,
-              left: 20,
-              child: _buildFloatingElement(60),
-            ),
-            Positioned(
-              top: 100,
-              right: 40,
-              child: _buildFloatingElement(40),
-            ),
-
-            // Main content
-            SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // Title
-                    Text(
-                      'O\'zbek Ertaklari',
-                      style: GoogleFonts.playfairDisplay(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Magical Stories from Uzbekistan',
-                      style: GoogleFonts.openSans(
-                        fontSize: 16,
-                        color: Colors.white.withOpacity(0.8),
-                      ),
-                    ),
-
-                    const SizedBox(height: 24),
-
-                    // Search Bar
-                    _buildGlassSearchBar(),
-
-                    // const SizedBox(height: 20),
-                  ],
+      ),
+      child: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Title - kompakt
+              Text(
+                'O\'zbek Ertaklari',
+                style: GoogleFonts.playfairDisplay(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
                 ),
               ),
-            ),
-          ],
+              IconButton(
+                icon: Icon(
+                  Theme.of(context).brightness == Brightness.dark
+                      ? Icons.light_mode
+                      : Icons.dark_mode,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  Provider.of<ThemeProvider>(context, listen: false)
+                      .toggleTheme();
+                },
+              ),
+              const SizedBox(height: 4),
+              Text(
+                'Magical Stories from Uzbekistan',
+                style: GoogleFonts.openSans(
+                  fontSize: 14,
+                  color: Colors.white.withOpacity(0.8),
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+              // Search Bar - kichikroq
+              _buildGlassSearchBar(),
+
+              const SizedBox(height: 16),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildFloatingElement(double size) {
-    return AnimatedBuilder(
-      animation: _animationController,
-      builder: (context, child) {
-        return Transform.translate(
-          offset: Offset(0, _animationController.value * 20 - 10),
-          child: Container(
-            width: size,
-            height: size,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.amber.withOpacity(0.2),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
   Widget _buildGlassSearchBar() {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(25),
+      borderRadius: BorderRadius.circular(20),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
         child: Container(
+          height: 50,
           decoration: BoxDecoration(
             color: Colors.white.withOpacity(0.15),
-            borderRadius: BorderRadius.circular(25),
+            borderRadius: BorderRadius.circular(20),
             border: Border.all(
               color: Colors.white.withOpacity(0.2),
             ),
@@ -196,25 +171,19 @@ class _HomeScreenState extends State<HomeScreen>
           child: TextField(
             controller: _searchController,
             onChanged: (value) {
-              context.read<StoriesProvider>().searchStories(value);
+              if (value.isNotEmpty) {
+                // Navigate to search results
+                // TODO: implement search screen
+              }
             },
             style: const TextStyle(color: Colors.white),
             decoration: InputDecoration(
-              hintText: 'Sehrli ertaklarni qidiring...',
+              hintText: 'Ertaklarni qidirish...',
               hintStyle: TextStyle(color: Colors.white.withOpacity(0.6)),
-              prefixIcon: const Icon(Icons.search, color: Colors.white),
-              suffixIcon: _searchController.text.isNotEmpty
-                  ? IconButton(
-                      icon: const Icon(Icons.clear, color: Colors.white),
-                      onPressed: () {
-                        _searchController.clear();
-                        context.read<StoriesProvider>().searchStories('');
-                        setState(() {});
-                      },
-                    )
-                  : const Icon(Icons.mic, color: Colors.white),
+              prefixIcon:
+                  const Icon(Icons.search, color: Colors.white, size: 22),
               border: InputBorder.none,
-              contentPadding: const EdgeInsets.symmetric(vertical: 16),
+              contentPadding: const EdgeInsets.symmetric(vertical: 14),
             ),
           ),
         ),
@@ -222,129 +191,196 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-  Widget _buildCategories() {
+  Widget _buildQuickCategories() {
     return Consumer<StoriesProvider>(
       builder: (context, provider, child) {
-        return SizedBox(
-          height: 180,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-            children: [
-              CategoryCard(
-                title: 'Botirlar',
-                subtitle: 'Qahramonlar',
-                icon: '⚔️',
-                color: const Color(0xFFD32F2F),
-                onTap: () => provider.filterByCategory('Botirlar haqida'),
-              ),
-              CategoryCard(
-                title: 'Muhabbat',
-                subtitle: 'Sevgi',
-                icon: '❤️',
-                color: const Color(0xFFFF6F00),
-                onTap: () => provider.filterByCategory('Muhabbat haqida'),
-              ),
-              CategoryCard(
-                title: 'Sehrli',
-                subtitle: 'Afsonaviy',
-                icon: '✨',
-                color: const Color(0xFF4A148C),
-                onTap: () => provider.filterByCategory('Sehrli ertaklar'),
-              ),
-              CategoryCard(
-                title: 'Hikmatli',
-                subtitle: 'Donolik',
-                icon: '📖',
-                color: const Color(0xFF2E7D32),
-                onTap: () => provider.filterByCategory('Hikmatli ertaklar'),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildFeaturedSection() {
-    return Consumer<StoriesProvider>(
-      builder: (context, provider, child) {
-        final featured = provider.stories.take(3).toList();
+        final categoryStats = _getCategoryStats(provider);
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Text(
-                'Tavsiya etilgan ertaklar',
-                style: GoogleFonts.playfairDisplay(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                  color: const Color(0xFF1A1A1A),
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            SizedBox(
-              height: 280,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                itemCount: featured.length,
-                itemBuilder: (context, index) {
-                  return FeaturedCard(
-                    story: featured[index],
-                    onTap: () {
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Kategoriyalar',
+                    style: GoogleFonts.playfairDisplay(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: const Color(0xFF1A1A1A),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (_) =>
-                              StoryReaderScreen(story: featured[index]),
+                              CategoriesScreen(categoryStats: categoryStats),
                         ),
                       );
                     },
-                  );
-                },
+                    child: Text(
+                      'Barchasi →',
+                      style: GoogleFonts.openSans(
+                        fontSize: 14,
+                        color: const Color(0xFF4A148C),
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(height: 20),
+            SizedBox(
+              height: 120,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                children: [
+                  _buildCategoryTile(
+                    'Botirlar',
+                    categoryStats['Botirlar haqida'] ?? 0,
+                    '⚔️',
+                    const Color(0xFFD32F2F),
+                    () => _navigateToCategory('Botirlar haqida'),
+                  ),
+                  _buildCategoryTile(
+                    'Muhabbat',
+                    categoryStats['Muhabbat haqida'] ?? 0,
+                    '❤️',
+                    const Color(0xFFFF6F00),
+                    () => _navigateToCategory('Muhabbat haqida'),
+                  ),
+                  _buildCategoryTile(
+                    'Sehrli',
+                    categoryStats['Sehrli ertaklar'] ?? 0,
+                    '✨',
+                    const Color(0xFF4A148C),
+                    () => _navigateToCategory('Sehrli ertaklar'),
+                  ),
+                  _buildCategoryTile(
+                    'Hikmatli',
+                    categoryStats['Hikmatli ertaklar'] ?? 0,
+                    '📖',
+                    const Color(0xFF2E7D32),
+                    () => _navigateToCategory('Hikmatli ertaklar'),
+                  ),
+                ],
+              ),
+            ),
           ],
         );
       },
     );
   }
 
-  Widget _buildStoriesGrid() {
+  Widget _buildCategoryTile(
+    String title,
+    int count,
+    String icon,
+    Color color,
+    VoidCallback onTap,
+  ) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 110,
+        margin: const EdgeInsets.only(right: 12),
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: color.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: color.withOpacity(0.3),
+            width: 1,
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              icon,
+              style: const TextStyle(fontSize: 28),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: GoogleFonts.montserrat(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: const Color(0xFF1A1A1A),
+                  ),
+                ),
+                Text(
+                  '$count ertak',
+                  style: GoogleFonts.openSans(
+                    fontSize: 12,
+                    color: Colors.grey.shade600,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFeaturedSection() {
     return Consumer<StoriesProvider>(
       builder: (context, provider, child) {
-        return SliverPadding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          sliver: SliverGrid(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 0.75,
-              crossAxisSpacing: 16,
-              mainAxisSpacing: 16,
+        // Random 10 ta ertak
+        final allStories = List.from(provider.stories);
+        allStories.shuffle(Random());
+        final featured = allStories.take(10).toList();
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 24, 20, 16),
+              child: Text(
+                'Tavsiya etilgan',
+                style: GoogleFonts.playfairDisplay(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: const Color(0xFF1A1A1A),
+                ),
+              ),
             ),
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                final story = provider.stories[index];
-                return PremiumStoryCard(
-                  story: story,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => StoryReaderScreen(story: story),
-                      ),
-                    );
-                  },
-                );
-              },
-              childCount: provider.stories.length,
+            SizedBox(
+              height: 260,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                itemCount: featured.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                    width: 160,
+                    margin: const EdgeInsets.only(right: 12),
+                    child: PremiumStoryCard(
+                      story: featured[index],
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) =>
+                                StoryReaderScreen(story: featured[index]),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
             ),
-          ),
+          ],
         );
       },
     );
@@ -377,8 +413,8 @@ class _HomeScreenState extends State<HomeScreen>
             elevation: 0,
             items: const [
               BottomNavigationBarItem(
-                icon: Icon(Icons.auto_stories_rounded),
-                label: 'Ertaklar',
+                icon: Icon(Icons.home_rounded),
+                label: 'Asosiy',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.favorite_rounded),
@@ -391,6 +427,23 @@ class _HomeScreenState extends State<HomeScreen>
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Map<String, int> _getCategoryStats(StoriesProvider provider) {
+    final stats = <String, int>{};
+    for (var story in provider.stories) {
+      stats[story.category] = (stats[story.category] ?? 0) + 1;
+    }
+    return stats;
+  }
+
+  void _navigateToCategory(String category) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => CategoryStoriesScreen(category: category),
       ),
     );
   }
