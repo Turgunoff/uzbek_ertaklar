@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/stories_provider.dart';
 import '../widgets/story_card.dart';
-// import 'story_reader_screen.dart';
+import 'story_reader_screen.dart';
 
 class FavoritesScreen extends StatelessWidget {
   const FavoritesScreen({Key? key}) : super(key: key);
@@ -47,8 +47,7 @@ class FavoritesScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    // builder: (_) => StoryReaderScreen(story: story),
-                    builder: (_) => Container(),
+                    builder: (_) => StoryReaderScreen(story: story),
                   ),
                 );
               },

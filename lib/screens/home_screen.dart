@@ -6,7 +6,7 @@ import '../providers/stories_provider.dart';
 import '../widgets/premium_story_card.dart';
 import '../widgets/category_card.dart';
 import '../widgets/featured_card.dart';
-// import 'story_reader_screen.dart';
+import 'story_reader_screen.dart';
 import 'favorites_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -294,8 +294,7 @@ class _HomeScreenState extends State<HomeScreen>
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          // builder: (_) => StoryReaderScreen(story: featured[index]),
-                          builder: (_) => Container(),
+                          builder: (_) => StoryReaderScreen(story: featured[index]),
                         ),
                       );
                     },
@@ -331,8 +330,7 @@ class _HomeScreenState extends State<HomeScreen>
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        // builder: (_) => StoryReaderScreen(story: story),
-                        builder: (_) => Container(),
+                        builder: (_) => StoryReaderScreen(story: story),
                       ),
                     );
                   },
