@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../models/story.dart';
 import '../providers/stories_provider.dart';
@@ -239,7 +238,8 @@ class _LazyStoryCardState extends State<LazyStoryCard>
                         ),
                         child: Text(
                           _getCategoryName(widget.story.category),
-                          style: GoogleFonts.openSans(
+                          style: TextStyle(
+                            fontFamily: 'Open Sans',
                             fontSize: 10,
                             fontWeight: FontWeight.w600,
                             color: _getCategoryColor(widget.story.category),
@@ -253,7 +253,8 @@ class _LazyStoryCardState extends State<LazyStoryCard>
                       Expanded(
                         child: Text(
                           widget.story.title,
-                          style: GoogleFonts.playfairDisplay(
+                          style: const TextStyle(
+                            fontFamily: 'Playfair Display',
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                             color: const Color(0xFF1A1A1A),
@@ -274,7 +275,8 @@ class _LazyStoryCardState extends State<LazyStoryCard>
                           const SizedBox(width: 4),
                           Text(
                             widget.story.readTime,
-                            style: GoogleFonts.openSans(
+                            style: TextStyle(
+                              fontFamily: 'Open Sans',
                               fontSize: 12,
                               color: Colors.grey.shade600,
                             ),

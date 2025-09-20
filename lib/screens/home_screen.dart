@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'dart:ui';
 import 'dart:math';
 import '../providers/stories_provider.dart';
@@ -105,7 +104,8 @@ class _HomeScreenState extends State<HomeScreen>
               // Title - kompakt
               Text(
                 'O\'zbek Ertaklari',
-                style: GoogleFonts.playfairDisplay(
+                style: const TextStyle(
+                  fontFamily: 'Playfair Display',
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
@@ -126,7 +126,8 @@ class _HomeScreenState extends State<HomeScreen>
               const SizedBox(height: 4),
               Text(
                 'O\'zbekistonning sehrli ertaklari',
-                style: GoogleFonts.openSans(
+                style: TextStyle(
+                  fontFamily: 'Open Sans',
                   fontSize: 14,
                   color: Colors.white.withOpacity(0.8),
                 ),
@@ -157,7 +158,8 @@ class _HomeScreenState extends State<HomeScreen>
                 children: [
                   Text(
                     'Kategoriyalar',
-                    style: GoogleFonts.playfairDisplay(
+                    style: TextStyle(
+                      fontFamily: 'Playfair Display',
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                       color: isDark ? Colors.white : const Color(0xFF1A1A1A),
@@ -175,9 +177,10 @@ class _HomeScreenState extends State<HomeScreen>
                     },
                     child: Text(
                       'Barchasi →',
-                      style: GoogleFonts.openSans(
+                      style: const TextStyle(
+                        fontFamily: 'Open Sans',
                         fontSize: 14,
-                        color: const Color(0xFF4A148C),
+                        color: Color(0xFF4A148C),
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -264,7 +267,8 @@ class _HomeScreenState extends State<HomeScreen>
               children: [
                 Text(
                   title,
-                  style: GoogleFonts.montserrat(
+                  style: TextStyle(
+                    fontFamily: 'Montserrat',
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                     color: isDark ? Colors.white : const Color(0xFF1A1A1A),
@@ -272,7 +276,8 @@ class _HomeScreenState extends State<HomeScreen>
                 ),
                 Text(
                   '$count ertak',
-                  style: GoogleFonts.openSans(
+                  style: TextStyle(
+                    fontFamily: 'Open Sans',
                     fontSize: 12,
                     color: isDark ? Colors.white70 : Colors.grey.shade600,
                   ),
@@ -301,7 +306,8 @@ class _HomeScreenState extends State<HomeScreen>
               padding: const EdgeInsets.fromLTRB(20, 24, 20, 16),
               child: Text(
                 'Tavsiya etilgan',
-                style: GoogleFonts.playfairDisplay(
+                style: TextStyle(
+                  fontFamily: 'Playfair Display',
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                   color: isDark ? Colors.white : const Color(0xFF1A1A1A),

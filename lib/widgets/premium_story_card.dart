@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../models/story.dart';
 import '../providers/stories_provider.dart';
@@ -166,7 +165,8 @@ class _PremiumStoryCardState extends State<PremiumStoryCard>
                         ),
                         child: Text(
                           _getCategoryName(widget.story.category),
-                          style: GoogleFonts.openSans(
+                          style: TextStyle(
+                            fontFamily: 'Open Sans',
                             fontSize: 10,
                             fontWeight: FontWeight.w600,
                             color: _getCategoryColor(widget.story.category),
@@ -180,7 +180,8 @@ class _PremiumStoryCardState extends State<PremiumStoryCard>
                       Expanded(
                         child: Text(
                           widget.story.title,
-                          style: GoogleFonts.playfairDisplay(
+                          style: TextStyle(
+                            fontFamily: 'Playfair Display',
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                             color:
@@ -203,7 +204,8 @@ class _PremiumStoryCardState extends State<PremiumStoryCard>
                           const SizedBox(width: 4),
                           Text(
                             widget.story.readTime,
-                            style: GoogleFonts.openSans(
+                            style: TextStyle(
+                              fontFamily: 'Open Sans',
                               fontSize: 12,
                               color: isDark
                                   ? Colors.white60

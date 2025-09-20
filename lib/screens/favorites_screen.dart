@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../providers/stories_provider.dart';
 import '../providers/theme_provider.dart';
 import '../widgets/premium_story_card.dart';
 import 'story_reader_screen.dart';
 
 class FavoritesScreen extends StatelessWidget {
-  const FavoritesScreen({Key? key}) : super(key: key);
+  const FavoritesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +104,8 @@ class FavoritesScreen extends StatelessWidget {
             // Title
             Text(
               'Sevimli ertaklar yo\'q',
-              style: GoogleFonts.playfairDisplay(
+              style: TextStyle(
+                fontFamily: 'Playfair Display',
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
                 color: isDark ? Colors.white : const Color(0xFF1A1A1A),
@@ -118,7 +118,8 @@ class FavoritesScreen extends StatelessWidget {
             // Subtitle
             Text(
               'Sizga yoqqan ertaklarni sevimlilar ro\'yxatiga qo\'shing',
-              style: GoogleFonts.openSans(
+              style: TextStyle(
+                fontFamily: 'Open Sans',
                 fontSize: 16,
                 color: isDark ? Colors.white70 : Colors.grey.shade600,
                 height: 1.5,
@@ -143,36 +144,6 @@ class FavoritesScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              child: ElevatedButton(
-                onPressed: () {
-                  // Navigate to home tab
-                  // TODO: Implement navigation to home tab
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.transparent,
-                  shadowColor: Colors.transparent,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25),
-                  ),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(Icons.explore_rounded, color: Colors.white),
-                    const SizedBox(width: 8),
-                    Text(
-                      'Ertaklarni ko\'rish',
-                      style: GoogleFonts.openSans(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
             ),
           ],
         ),
@@ -182,13 +153,13 @@ class FavoritesScreen extends StatelessWidget {
 
   Widget _buildHeader(BuildContext context, int count, bool isDark) {
     return Container(
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [Color(0xFF4A148C), Color(0xFF7B1FA2)],
         ),
-        borderRadius: const BorderRadius.only(
+        borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(30),
           bottomRight: Radius.circular(30),
         ),
@@ -202,7 +173,8 @@ class FavoritesScreen extends StatelessWidget {
               // Title
               Text(
                 'Sevimli ertaklar',
-                style: GoogleFonts.playfairDisplay(
+                style: const TextStyle(
+                  fontFamily: 'Playfair Display',
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
@@ -214,7 +186,8 @@ class FavoritesScreen extends StatelessWidget {
               // Subtitle
               Text(
                 '$count ta sevimli ertak',
-                style: GoogleFonts.openSans(
+                style: TextStyle(
+                  fontFamily: 'Open Sans',
                   fontSize: 16,
                   color: Colors.white.withOpacity(0.9),
                 ),
@@ -280,7 +253,8 @@ class FavoritesScreen extends StatelessWidget {
         children: [
           Text(
             'Statistika',
-            style: GoogleFonts.playfairDisplay(
+            style: TextStyle(
+              fontFamily: 'Playfair Display',
               fontSize: 20,
               fontWeight: FontWeight.bold,
               color: isDark ? Colors.white : const Color(0xFF1A1A1A),
@@ -324,7 +298,8 @@ class FavoritesScreen extends StatelessWidget {
           const SizedBox(width: 8),
           Text(
             '$name ($count)',
-            style: GoogleFonts.openSans(
+            style: TextStyle(
+              fontFamily: 'Open Sans',
               fontSize: 14,
               fontWeight: FontWeight.w600,
               color: isDark ? Colors.white : const Color(0xFF1A1A1A),

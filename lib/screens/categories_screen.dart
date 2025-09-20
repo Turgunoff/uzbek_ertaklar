@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../providers/stories_provider.dart';
 import '../providers/theme_provider.dart';
 import '../models/story.dart'; // Import qo'shing
@@ -75,7 +74,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                     duration: const Duration(milliseconds: 100),
                     child: Text(
                       'Barcha kategoriyalar',
-                      style: GoogleFonts.playfairDisplay(
+                      style: const TextStyle(
+                        fontFamily: 'Playfair Display',
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                         fontSize: 18,
@@ -104,7 +104,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                               duration: const Duration(milliseconds: 100),
                               child: Text(
                                 'Barcha kategoriyalar',
-                                style: GoogleFonts.playfairDisplay(
+                                style: const TextStyle(
+                                  fontFamily: 'Playfair Display',
                                   fontSize: 28,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
@@ -211,7 +212,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             const SizedBox(height: 24),
             Text(
               'Hech narsa topilmadi',
-              style: GoogleFonts.playfairDisplay(
+              style: TextStyle(
+                fontFamily: 'Playfair Display',
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
                 color: isDark ? Colors.white : const Color(0xFF1A1A1A),
@@ -220,7 +222,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             const SizedBox(height: 12),
             Text(
               'Boshqa so\'z bilan qidiring',
-              style: GoogleFonts.openSans(
+              style: TextStyle(
+                fontFamily: 'Open Sans',
                 fontSize: 16,
                 color: isDark ? Colors.white70 : Colors.grey.shade600,
               ),
@@ -349,7 +352,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                   const SizedBox(width: 8),
                   Text(
                     category,
-                    style: GoogleFonts.playfairDisplay(
+                    style: TextStyle(
+                      fontFamily: 'Playfair Display',
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                       color: isDark ? Colors.white : const Color(0xFF1A1A1A),
@@ -358,7 +362,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                   const SizedBox(width: 8),
                   Text(
                     '(${stories.length})',
-                    style: GoogleFonts.openSans(
+                    style: TextStyle(
+                      fontFamily: 'Open Sans',
                       fontSize: 16,
                       color: isDark ? Colors.white70 : Colors.grey.shade600,
                     ),
@@ -382,7 +387,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                     children: [
                       Text(
                         'Barchasi',
-                        style: GoogleFonts.openSans(
+                        style: TextStyle(
+                          fontFamily: 'Open Sans',
                           fontSize: 14,
                           color: color,
                           fontWeight: FontWeight.w600,

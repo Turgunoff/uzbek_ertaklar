@@ -23,8 +23,6 @@ dependencies:
   shared_preferences: ^2.2.2
 
   # UI
-  google_fonts: ^6.1.0
-  flutter_native_splash: ^2.3.5 # Splash screen
   smooth_page_indicator: ^1.1.0 # Onboarding dots
   flutter_svg: ^2.0.9
   shimmer: ^3.0.0
@@ -37,14 +35,6 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^3.0.0
 
-flutter_native_splash:
-  color: "#0D47A1" # O'zbek rang (ko'k)
-  image: assets/images/splash_logo.png
-  android: true
-  ios: true
-  android_12:
-    color: "#0D47A1"
-
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -55,3 +45,29 @@ flutter:
   assets:
     - assets/stories/
     - assets/images/
+    - assets/fonts/montserrat/
+    - assets/fonts/open_sans/
+    - assets/fonts/playfair_display/
+    - assets/fonts/merriweather/
+
+  fonts:
+    - family: Playfair Display
+      fonts:
+        - asset: assets/fonts/playfair_display/PlayfairDisplay-Regular.ttf
+        - asset: assets/fonts/playfair_display/PlayfairDisplay-Bold.ttf
+          weight: 700
+
+    - family: Open Sans
+      fonts:
+        - asset: assets/fonts/open_sans/OpenSans-Regular.ttf
+        - asset: assets/fonts/open_sans/OpenSans-SemiBold.ttf
+          weight: 600
+
+    - family: Montserrat
+      fonts:
+        - asset: assets/fonts/montserrat/Montserrat-Bold.ttf
+          weight: 700
+
+    - family: Merriweather
+      fonts:
+        - asset: assets/fonts/merriweather/Merriweather_24pt-Regular.ttf

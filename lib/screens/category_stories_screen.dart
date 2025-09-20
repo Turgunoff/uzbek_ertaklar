@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../providers/stories_provider.dart';
 import '../widgets/premium_story_card.dart';
 import 'story_reader_screen.dart';
@@ -22,7 +21,8 @@ class CategoryStoriesScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           _getCategoryTitle(category),
-          style: GoogleFonts.playfairDisplay(
+          style: const TextStyle(
+            fontFamily: 'Playfair Display',
             fontWeight: FontWeight.bold,
             color: Colors.white,
           ),
@@ -92,14 +92,16 @@ class CategoryStoriesScreen extends StatelessWidget {
                         children: [
                           Text(
                             '${stories.length} ta ertak',
-                            style: GoogleFonts.montserrat(
+                            style: TextStyle(
+                              fontFamily: 'Montserrat',
                               fontSize: 16,
                               color: Colors.white.withOpacity(0.9),
                             ),
                           ),
                           Text(
                             _getCategorySubtitle(category),
-                            style: GoogleFonts.openSans(
+                            style: TextStyle(
+                              fontFamily: 'Open Sans',
                               fontSize: 14,
                               color: Colors.white.withOpacity(0.8),
                             ),

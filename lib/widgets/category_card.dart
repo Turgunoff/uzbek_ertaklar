@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class CategoryCard extends StatelessWidget {
   final String title;
@@ -73,7 +72,8 @@ class CategoryCard extends StatelessWidget {
                     children: [
                       Text(
                         title,
-                        style: GoogleFonts.montserrat(
+                        style: const TextStyle(
+                          fontFamily: 'Montserrat',
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
@@ -82,7 +82,8 @@ class CategoryCard extends StatelessWidget {
                       const SizedBox(height: 4),
                       Text(
                         subtitle,
-                        style: GoogleFonts.openSans(
+                        style: TextStyle(
+                          fontFamily: 'Open Sans',
                           fontSize: 12,
                           color: Colors.white.withOpacity(0.8),
                         ),

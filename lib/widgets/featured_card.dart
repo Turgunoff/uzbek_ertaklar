@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../models/story.dart';
 
 class FeaturedCard extends StatefulWidget {
@@ -96,7 +95,8 @@ class _FeaturedCardState extends State<FeaturedCard> {
                         ),
                         child: Text(
                           widget.story.category,
-                          style: GoogleFonts.openSans(
+                          style: const TextStyle(
+                            fontFamily: 'Open Sans',
                             fontSize: 12,
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
@@ -109,7 +109,8 @@ class _FeaturedCardState extends State<FeaturedCard> {
                       // Title
                       Text(
                         widget.story.title,
-                        style: GoogleFonts.playfairDisplay(
+                        style: const TextStyle(
+                          fontFamily: 'Playfair Display',
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
@@ -123,7 +124,8 @@ class _FeaturedCardState extends State<FeaturedCard> {
                       // Description preview
                       Text(
                         _getPreview(widget.story.content),
-                        style: GoogleFonts.openSans(
+                        style: TextStyle(
+                          fontFamily: 'Open Sans',
                           fontSize: 14,
                           color: Colors.white.withOpacity(0.9),
                         ),
@@ -148,7 +150,8 @@ class _FeaturedCardState extends State<FeaturedCard> {
                           children: [
                             Text(
                               'Continue',
-                              style: GoogleFonts.montserrat(
+                              style: TextStyle(
+                                fontFamily: 'Montserrat',
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
                                 color: _getCategoryColor(widget.story.category),

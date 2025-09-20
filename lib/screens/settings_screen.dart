@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../providers/theme_provider.dart';
 
@@ -20,7 +19,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
       appBar: AppBar(
         title: Text(
           'Sozlamalar',
-          style: GoogleFonts.playfairDisplay(fontWeight: FontWeight.bold),
+          style: const TextStyle(
+            fontFamily: 'Playfair Display',
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
       body: ListView(
@@ -52,7 +54,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   const SizedBox(width: 12),
                   Text(
                     'Tungi rejim',
-                    style: GoogleFonts.openSans(
+                    style: const TextStyle(
+                      fontFamily: 'Open Sans',
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -64,7 +67,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   isDark
                       ? 'Qorong\'ida o\'qish uchun qulay'
                       : 'Yorug\' rejimda ishlayapti',
-                  style: GoogleFonts.openSans(fontSize: 14),
+                  style: const TextStyle(
+                    fontFamily: 'Open Sans',
+                    fontSize: 14,
+                  ),
                 ),
               ),
               value: isDark,
@@ -104,14 +110,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 const SizedBox(height: 8),
                 Text(
                   'O\'zbek Ertaklari',
-                  style: GoogleFonts.playfairDisplay(
+                  style: const TextStyle(
+                    fontFamily: 'Playfair Display',
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 Text(
                   '© 2025 Barcha huquqlar himoyalangan',
-                  style: GoogleFonts.openSans(
+                  style: const TextStyle(
+                    fontFamily: 'Open Sans',
                     color: Colors.grey,
                     fontSize: 12,
                   ),
@@ -129,7 +137,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
       padding: const EdgeInsets.only(left: 4, top: 8, bottom: 16),
       child: Text(
         title,
-        style: GoogleFonts.montserrat(
+        style: const TextStyle(
+          fontFamily: 'Montserrat',
           fontSize: 14,
           fontWeight: FontWeight.bold,
           color: const Color(0xFF4A148C),
@@ -163,11 +172,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
         leading: Icon(icon, color: const Color(0xFF4A148C)),
         title: Text(
           title,
-          style: GoogleFonts.openSans(fontWeight: FontWeight.w600),
+          style: const TextStyle(
+            fontFamily: 'Open Sans',
+            fontWeight: FontWeight.w600,
+          ),
         ),
         subtitle: Text(
           subtitle,
-          style: GoogleFonts.openSans(fontSize: 14),
+          style: const TextStyle(
+            fontFamily: 'Open Sans',
+            fontSize: 14,
+          ),
         ),
         trailing: onTap != null
             ? const Icon(Icons.arrow_forward_ios, size: 16)

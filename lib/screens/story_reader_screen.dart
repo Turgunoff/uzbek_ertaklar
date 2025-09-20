@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/story.dart';
@@ -105,7 +104,8 @@ class _StoryReaderScreenState extends State<StoryReaderScreen> {
       flexibleSpace: FlexibleSpaceBar(
         title: Text(
           widget.story.title,
-          style: GoogleFonts.playfairDisplay(
+          style: const TextStyle(
+            fontFamily: 'Playfair Display',
             fontWeight: FontWeight.bold,
             color: Colors.white,
           ),
@@ -157,7 +157,8 @@ class _StoryReaderScreenState extends State<StoryReaderScreen> {
                   ),
                   child: Text(
                     widget.story.category,
-                    style: GoogleFonts.openSans(
+                    style: TextStyle(
+                      fontFamily: 'Open Sans',
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                       color: _getCategoryColor(widget.story.category),
@@ -173,7 +174,8 @@ class _StoryReaderScreenState extends State<StoryReaderScreen> {
                 const SizedBox(width: 4),
                 Text(
                   widget.story.readTime,
-                  style: GoogleFonts.openSans(
+                  style: TextStyle(
+                    fontFamily: 'Open Sans',
                     fontSize: 14,
                     color: isDark ? Colors.white70 : Colors.grey.shade600,
                   ),
@@ -186,7 +188,8 @@ class _StoryReaderScreenState extends State<StoryReaderScreen> {
             // Story Content
             SelectableText(
               widget.story.content,
-              style: GoogleFonts.merriweather(
+              style: TextStyle(
+                fontFamily: 'Merriweather',
                 fontSize: _fontSize,
                 height: 1.8,
                 color: isDark ? Colors.white : const Color(0xFF1A1A1A),
@@ -214,7 +217,8 @@ class _StoryReaderScreenState extends State<StoryReaderScreen> {
                     const SizedBox(height: 8),
                     Text(
                       'Ertak tugadi',
-                      style: GoogleFonts.playfairDisplay(
+                      style: TextStyle(
+                        fontFamily: 'Playfair Display',
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: _getCategoryColor(widget.story.category),
@@ -265,7 +269,8 @@ class _StoryReaderScreenState extends State<StoryReaderScreen> {
 
             Text(
               '${_fontSize.toInt()}',
-              style: GoogleFonts.openSans(
+              style: TextStyle(
+                fontFamily: 'Open Sans',
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
                 color: isDark ? Colors.white : Colors.black,
