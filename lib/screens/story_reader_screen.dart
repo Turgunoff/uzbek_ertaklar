@@ -9,15 +9,19 @@ import '../providers/theme_provider.dart';
 class StoryReaderScreen extends StatefulWidget {
   final Story story;
 
-  const StoryReaderScreen({Key? key, required this.story}) : super(key: key);
+  const StoryReaderScreen({super.key, required this.story});
 
   @override
   State<StoryReaderScreen> createState() => _StoryReaderScreenState();
 }
 
-class _StoryReaderScreenState extends State<StoryReaderScreen> {
+class _StoryReaderScreenState extends State<StoryReaderScreen>
+    with TickerProviderStateMixin {
   double _fontSize = 18.0;
   final ScrollController _scrollController = ScrollController();
+  bool _isAutoScrolling = false;
+  AnimationController? _animationController;
+  Animation<double>? _scrollAnimation;
 
   @override
   void initState() {
@@ -29,6 +33,7 @@ class _StoryReaderScreenState extends State<StoryReaderScreen> {
   @override
   void dispose() {
     _scrollController.dispose();
+    _animationController?.dispose();
     super.dispose();
   }
 
@@ -185,6 +190,66 @@ class _StoryReaderScreenState extends State<StoryReaderScreen> {
 
             const SizedBox(height: 24),
 
+            // Story Description
+            if (widget.story.description.isNotEmpty) ...[
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      _getCategoryColor(widget.story.category).withOpacity(0.1),
+                      _getCategoryColor(widget.story.category)
+                          .withOpacity(0.05),
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: _getCategoryColor(widget.story.category)
+                        .withOpacity(0.2),
+                    width: 1,
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.info_outline_rounded,
+                          color: _getCategoryColor(widget.story.category),
+                          size: 20,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Ertak haqida qisqacha',
+                          style: TextStyle(
+                            fontFamily: 'Playfair Display',
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: _getCategoryColor(widget.story.category),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      widget.story.description,
+                      style: TextStyle(
+                        fontFamily: 'Open Sans',
+                        fontSize: 16,
+                        height: 1.6,
+                        color: isDark ? Colors.white70 : Colors.grey.shade700,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 24),
+            ],
+
             // Story Content
             SelectableText(
               widget.story.content,
@@ -216,7 +281,7 @@ class _StoryReaderScreenState extends State<StoryReaderScreen> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Ertak tugadi',
+                      'Ertak tugadi. Rahmat!',
                       style: TextStyle(
                         fontFamily: 'Playfair Display',
                         fontSize: 20,
@@ -305,11 +370,13 @@ class _StoryReaderScreenState extends State<StoryReaderScreen> {
               color: isDark ? Colors.white : Colors.black,
             ),
 
-            // Auto Scroll
+            // Play/Pause button
             IconButton(
-              icon: const Icon(Icons.play_arrow),
-              onPressed: _startAutoScroll,
-              color: isDark ? Colors.white : Colors.black,
+              icon: Icon(
+                _isAutoScrolling ? Icons.pause : Icons.play_arrow,
+                color: isDark ? Colors.white : Colors.black,
+              ),
+              onPressed: _toggleAutoScroll,
             ),
           ],
         ),
@@ -333,9 +400,9 @@ ${widget.story.content.length > 200 ? '${widget.story.content.substring(0, 200)}
     // Show snackbar with share options
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Ertak matni clipboard\'ga nusxalandi!'),
+        content: Text('Matn nusxalandi! Boshqa ilovalarda ulashing'),
         action: SnackBarAction(
-          label: 'Share',
+          label: 'OK',
           onPressed: () {
             // This will open share dialog on most Android devices
             Clipboard.setData(ClipboardData(text: shareText));
@@ -348,11 +415,61 @@ ${widget.story.content.length > 200 ? '${widget.story.content.substring(0, 200)}
   }
 
   void _startAutoScroll() {
-    _scrollController.animateTo(
-      _scrollController.position.maxScrollExtent,
-      duration: Duration(seconds: widget.story.content.length ~/ 20),
-      curve: Curves.linear,
+    if (_isAutoScrolling) return;
+
+    setState(() {
+      _isAutoScrolling = true;
+    });
+
+    _animationController = AnimationController(
+      duration: Duration(seconds: widget.story.content.length ~/ 40),
+      vsync: this,
     );
+
+    _scrollAnimation = Tween<double>(
+      begin: _scrollController.offset,
+      end: _scrollController.position.maxScrollExtent,
+    ).animate(CurvedAnimation(
+      parent: _animationController!,
+      curve: Curves.linear,
+    ));
+
+    _scrollAnimation!.addListener(() {
+      if (_scrollController.hasClients) {
+        _scrollController.jumpTo(_scrollAnimation!.value);
+      }
+    });
+
+    _animationController!.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        setState(() {
+          _isAutoScrolling = false;
+        });
+        _animationController?.dispose();
+        _animationController = null;
+      }
+    });
+
+    _animationController!.forward();
+  }
+
+  void _pauseAutoScroll() {
+    if (_animationController != null) {
+      _animationController!.stop();
+      _animationController?.dispose();
+      _animationController = null;
+    }
+    setState(() {
+      _isAutoScrolling = false;
+    });
+  }
+
+  void _toggleAutoScroll() {
+    if (_isAutoScrolling) {
+      _pauseAutoScroll();
+    } else {
+      _startAutoScroll();
+    }
   }
 
   Color _getCategoryColor(String category) {

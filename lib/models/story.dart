@@ -4,6 +4,7 @@ class Story {
   final String category;
   final String content;
   final String readTime;
+  final String description;
   bool isFavorite;
 
   Story({
@@ -12,6 +13,7 @@ class Story {
     required this.category,
     required this.content,
     required this.readTime,
+    required this.description,
     this.isFavorite = false,
   });
 
@@ -23,6 +25,7 @@ class Story {
       category: json['category'],
       content: json['content'],
       readTime: json['readTime'],
+      description: json['description'] ?? '',
       isFavorite: json['isFavorite'] ?? false,
     );
   }
@@ -35,6 +38,7 @@ class Story {
       'category': category,
       'content': content,
       'readTime': readTime,
+      'description': description,
       'isFavorite': isFavorite,
     };
   }
