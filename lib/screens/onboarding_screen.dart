@@ -29,7 +29,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
       ),
     ),
     OnboardingPage(
-      title: '30+ Hikoyalar',
+      title: '40+ Hikoyalar',
       description:
           'Botirlar, sehrgarlar va hikmatli hikoyalar dunyosiga sayohat qiling',
       image: '✨',

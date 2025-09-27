@@ -86,7 +86,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           _buildInfoTile(
             icon: Icons.info_outline,
             title: 'Versiya',
-            subtitle: '1.0.0',
+            subtitle: '1.0.1',
           ),
           _buildInfoTile(
             icon: Icons.email_outlined,

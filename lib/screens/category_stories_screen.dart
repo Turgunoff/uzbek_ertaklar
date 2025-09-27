@@ -8,9 +8,9 @@ class CategoryStoriesScreen extends StatelessWidget {
   final String category;
 
   const CategoryStoriesScreen({
-    Key? key,
+    super.key,
     required this.category,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +19,7 @@ class CategoryStoriesScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: isDark ? const Color(0xFF121212) : Colors.grey.shade50,
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
         title: Text(
           _getCategoryTitle(category),
           style: const TextStyle(
